@@ -7,7 +7,7 @@
 /*
  * pipeline input parameters
  */
-params.reads = "$projectDir/fastq/F3D148_S214_L001_R{1,2}_001.fastq"
+params.reads = "$projectDir/fastq/"
 params.outdir = "$projectDir/results"
 params.fastqcdir = "$projectDir/results/fastqc"
 params.cutadaptdir = "$projectDir/results/1_QC-cutadapt"
@@ -69,24 +69,6 @@ process CUTADAPT {
     """
 }
 
-process DADA2 {
-
-    publishDir params.dada2dir, mode:'copy'
-
-    input:
-    path(cutadaptdir)
-    path(dada2dir)
-
-    output:
-    path("ASVs_count.tsv")
-    path("summary_tab.txt")
-    path("ASVs_AllNichesWithControls.fa")
-
-    script:
-    """
-    ${projectDir}/amplicon_dada2.R -d ${cutadaptdir} -m ${dada2dir}
-    """
-}
 
 workflow {
     Channel
